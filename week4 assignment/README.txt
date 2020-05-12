@@ -14,13 +14,13 @@ This repository is created to explain the steps of the week4 assignment of the c
 
 3. feature names in the features.txt are changed appropriately so as to use them as column names of X_train.txt and y_train.txt
 
-4. activity numbers in the y_train and y_test are given appropriate activity names by merging them with activity_labels.txt.
+4. subject_train.txt and subject_test.txt, identify the subjects performed the activity window wise. 
 
-5. subject_train.txt and subject_test.txt, identify the subjects performed the activity window wise. 
+5. subject_train and y_train are merged with X_train and subject_test and y_test are merged with subject_test and y_test are merged with X_test.
 
-6. subject_train and y_train are merged with X_train and subject_test and y_test are merged with subject_test and y_test are merged with X_test.
+6. Now the datasets X_train and X_test are merged rowwise to create a dataset 'data'.
 
-7. Now the datasets X_train and X_test are merged rowwise to create a dataset 'data'.
+7. activity numbers in the data are given appropriate activity names by merging them with activity_labels.txt.
 
 8. From 'data', only the features with measurements mean and standard deviation are extracted.
 

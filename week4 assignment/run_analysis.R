@@ -33,13 +33,6 @@ train_labels <- read.table("train/y_train.txt",
                            col.names = 'activitynumber', colClasses = 'factor')
 str(train_labels)
 
-#merging the activity data of the training data with activity lables for 
-#     aquiring the name of the activity of the training set
-train_labels <- merge(activity_labels, train_labels, 
-                      by.x = 'activitynumber', 
-                      by.y = 'activitynumber', 
-                      all.y = T)
-
 #loading the subject data to identify the subject who performed the activity
 train_subject <- read.table("train/subject_train.txt",
                             col.names = 'subjectnumber', colClasses = 'factor')
@@ -47,11 +40,6 @@ str(train_subject)
 
 #combining the acivity and subject details with training data
 train_data = cbind(train_subject, train_labels, train_data)
-
-#removing the objects that are not required
-rm(train_labels)
-rm(train_subject)
-
 
 #loading test set data with features as column names
 test_data <- read.table("test//X_test.txt",
@@ -66,13 +54,6 @@ test_labels <- read.table("test//y_test.txt",
                           col.names = 'activitynumber', colClasses = 'factor')
 str(test_labels)
 
-#merging the activity data of the test data with activity lables for 
-#     aquiring the name of the activity of the test set
-test_labels <- merge(activity_labels, test_labels, 
-                     by.x = 'activitynumber', 
-                     by.y = 'activitynumber', 
-                     all.y = T)
-
 #loading the subject data to identify the subject who performed the activity
 test_subject <- read.table("test/subject_test.txt",
                             col.names = 'subjectnumber', colClasses = 'factor')
@@ -81,22 +62,22 @@ str(test_subject)
 #combining the acivity and subject details with test data
 test_data = cbind(test_subject, test_labels, test_data)
 
-#removing the objects that are not required
-rm(test_labels)
-rm(test_subject)
-
-rm(features)
-rm(activity_labels)
-
 #combining the Training and Test data to make one complete dataset
 data = rbind(train_data,test_data)
 
+#merging the activity data with activity lables for 
+#     aquiring the name of the activity of the dataset
+data <- merge(activity_labels, data, 
+                      by.x = 'activitynumber', 
+                      by.y = 'activitynumber', 
+                      all.y = T)
+
 #removing the objects that are not required
-rm(train_data)
-rm(test_data)
+rm(train_data, test_data, train_labels, train_subject, 
+   test_labels, test_subject, features, activity_labels)
 
 #Extracting only the features with measurements mean and standard deviation
-required_data = data[,c(1,3, grep('_meanp|_stdp', tolower(names(data))))]
+required_data = data[,c(1, 2, 3, grep('mean|std', tolower(names(data))))]
 
 #Appropriately labelling the data set with descriptive variable names.
 features = colnames(required_data)
@@ -109,19 +90,16 @@ features = sub('stdP', 'stddev', features)
 #renaming the dataset with appropriate names
 names(required_data) = features
 
-#removing the objects that are not required
-rm(features)
-
 #creating a tidy data set with the average of each variable for each activity and each subject.
 library(dplyr)
-finalTidydata <- required_data %>% group_by(activityname, subjectnumber) %>% summarise_all(mean, na.rm = T)
+finalTidydata <- required_data %>% group_by(subjectnumber, activitynumber, activityname) %>% 
+      summarise_all(mean, na.rm = T) %>% arrange(subjectnumber, activitynumber)
 
 #removing the objects that are not required
-rm(data)
-rm(required_data)
+rm(features, data, required_data)
 
 #writing the final tidy dataset to the directory
-write.csv(finalTidydata, 'finalTidydata.csv', row.names = F)
+#write.table(finalTidydata, 'finalTidydata.txt', row.names = F, col.names = T)
 
 #removing the objects that are not required
 #rm(finalTidydata)

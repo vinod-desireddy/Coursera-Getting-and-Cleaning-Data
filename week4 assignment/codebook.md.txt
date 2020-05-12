@@ -1,4 +1,4 @@
-->This finalTidydata contains 40 observations and 68 variables
+->This finalTidydata contains 180 observations and 89 variables
 
 ->This data is tracked from a group of volunteers performing six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist.
 
